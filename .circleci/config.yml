@@ -5,7 +5,6 @@ orbs:
   shellcheck: circleci/shellcheck@3.1
 
 filters: &filters
-  branches: {}
   tags:
     only: /.*/
 
@@ -22,13 +21,13 @@ workflows:
           filters: *filters
       - orb-tools/publish:
           orb-name: prodvana/prodvana
-          vcs-type: "github"
+          vcs-type: << pipeline.project.type >>
           requires:
             [orb-tools/lint, orb-tools/review, orb-tools/pack, shellcheck/check]
           context: orb-publishing
           filters: *filters
       - orb-tools/continue:
           pipeline-number: << pipeline.number >>
-          vcs-type: "github"
+          vcs-type: << pipeline.project.type >>
           requires: [orb-tools/publish]
           filters: *filters

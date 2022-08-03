@@ -1,10 +1,9 @@
-iversion: 2.1
+version: 2.1
 orbs:
   prodvana: prodvana/prodvana@dev:<<pipeline.git.revision>>
   orb-tools: circleci/orb-tools@11.1
 
 filters: &filters
-  branches: {}
   tags:
     only: /.*/
 
