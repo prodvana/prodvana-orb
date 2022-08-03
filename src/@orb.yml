@@ -1,0 +1,9 @@
+version: 2.1
+
+description: >
+  Official orb for interacting with Prodvana.
+  Primary features include installing the pvnctl tooling and automating service deployments.
+
+display:
+  home_url: "https://docs.prodvana.io/docs"
+  source_url: "https://github.com/prodvana/prodvana-orb"
