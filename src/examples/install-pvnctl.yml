@@ -1,0 +1,15 @@
+description: |
+  Install pvnctl
+usage:
+  version: 2.1
+
+  orbs:
+    prodvana: prodvana/prodvana@x.y.z
+
+  jobs:
+    deploy:
+      docker:
+        - image: cimg/base:stable
+      steps:
+        - checkout
+        - prodvana/install-pvnctl
