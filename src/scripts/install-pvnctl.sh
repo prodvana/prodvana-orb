@@ -44,7 +44,7 @@ sha256sum --check --ignore-missing < checksums.txt
 tar xf "${ARCHIVE_NAME}"
 rm "${ARCHIVE_NAME}" checksums.txt
 
-[[ -w /usr/local/bin ]] && SUDO="" || SUDO=sudo
+[[ -w "${PARAM_INSTALL_PATH}" ]] && SUDO="" || SUDO=sudo
 
 ${SUDO} chmod +x ./pvnctl
 ${SUDO} mv ./pvnctl /usr/local/bin/pvnctl

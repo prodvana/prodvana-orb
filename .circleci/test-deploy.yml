@@ -7,6 +7,47 @@ filters: &filters
   tags:
     only: /.*/
 
+commands:
+  save-version:
+    description: "Persist the current version of the given service to a file"
+    parameters:
+      service:
+        type: string
+        description: "name of the service to check"
+      channel:
+        type: string
+        description: "which release channel to check"
+      version-path:
+        type: string
+        description: "file path where the version will be stored"
+        default: "version"
+    steps:
+      - run:
+          name: Save Current Service Version
+          command: |
+            set -euxo pipefail
+            pvnctl services list  -f json | jq ".[] | select(.service | contains(\"<<parameters.service>>\")) | select(.releaseChannel | contains(\"<<parameters.channel>>\")) | .version" > <<parameters.version-path>>
+
+  validate-push:
+    description: "Validate that the push was successful"
+    parameters:
+      service:
+        type: string
+        description: "name of the service to check"
+      channel:
+        type: string
+        description: "which release channel to check"
+      last-version-path:
+        type: string
+        description: "path to file with the last version saved"
+        default: "version"
+    steps:
+      - run:
+          name: Validate Push
+          command: |
+            set -euxo pipefail
+            version=$(pvnctl services list  -f json | jq ".[] | select(.service | contains(\"<<parameters.service>>\")) | select(.releaseChannel | contains(\"<<parameters.channel>>\")) | .version")
+            [[ "${version}" != "$(cat <<parameters.last-version-path>>)" ]]
 jobs:
   command-tests:
     docker:
@@ -14,11 +55,43 @@ jobs:
     steps:
       - checkout
       - prodvana/install-pvnctl
+      - run:
+          name: Verify Install
+          command: command -v pvnctl
+      - prodvana/setup-auth:
+          org: prodvana-cont-testing-prod
+          context: test-context
+      - run:
+          name: Verify Auth
+          command: |
+            set -euxo pipefail
+            pvnctl auth context use test-context
+            [[ -z "$(pvnctl services list  -f json | jq '.[] | select(.service | contains(\"orb-test\"))')" ]]
+      - save-version:
+          service: orb-test
+          channel: staging
+      - prodvana/push:
+          auth-context: test-context
+          service: orb-test
+          docker-image: "index.docker.io/prodvana/demo_api:v4"
+          wait-channels: staging
+      - validate-push:
+          service: orb-test
+          channel: staging
 workflows:
   test-deploy:
     jobs:
       - command-tests:
           filters: *filters
+      - prodvana/push:
+          name: test-push-job
+          filters: *filters
+          org: prodvana-cont-testing-prod
+          service: orb-test
+          docker-image: "index.docker.io/prodvana/demo_api:v4"
+          wait-channels: staging
+          requires:
+            - command-tests
       - orb-tools/pack:
           filters: *filters
       - orb-tools/publish:

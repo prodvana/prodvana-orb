@@ -1,0 +1,59 @@
+description: >
+  Installs pvnctl cli tooling and then updates and pushes a service in Prodvana.
+
+docker:
+  - image: << parameters.docker-image-for-job >>
+parameters:
+  docker-image-for-job:
+    description: The docker image to be used for running this job on CircleCI.
+    type: string
+    default: 'cimg/base:stable'
+  org:
+    type: string
+    description: "Prodvana organization to deploy to (you can find this in your Org's url: <org>.prodvana.io)"
+  api-token:
+    type: env_var_name
+    description: "name of the environment variable holding the Prodvana api token."
+    default: PRODVANA_API_TOKEN
+  auth-context:
+    type: string
+    default: "default"
+    description: "name of the auth context to create"
+  service:
+    type: string
+    description: "name of the service to push"
+  docker-image:
+    type: string
+    description: "full path of the docker image to use"
+  wait-channels:
+    type: string
+    default: ""
+    description: "comma separated list of name of release channel(s) to wait for before considering the push complete"
+  install-pvnctl:
+    type: boolean
+    default: true
+    description: "whether pvnctl should be automatically installed or not."
+  pvnctl-version:
+    type: string
+    default: "latest"
+    description: "what version of pvnctl to install."
+  pvnctl-install-path:
+    type: string
+    default: "/usr/local/bin"
+    description: "location to install pvnctl"
+steps:
+  - when:
+      condition: <<parameters.install-pvnctl>>
+      steps:
+        - install-pvnctl:
+            version: <<parameters.pvnctl-version>>
+            install-path: <<parameters.pvnctl-install-path>>
+  - setup-auth:
+      org: <<parameters.org>>
+      api-token: <<parameters.api-token>>
+      context: <<parameters.auth-context>>
+  - push:
+      auth-context: <<parameters.auth-context>>
+      service: <<parameters.service>>
+      docker-image: <<parameters.docker-image>>
+      wait-channels: <<parameters.wait-channels>>

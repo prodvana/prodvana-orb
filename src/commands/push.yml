@@ -2,13 +2,10 @@ description: >
   This command updates and pushes a specified service in Prodvana.
 
 parameters:
-  org:
+  auth-context:
     type: string
-    description: "Prodvana organization to deploy to (you can find this in your Org's url: <org>.prodvana.io)"
-  api-token:
-    type: env_var_name
-    description: "name of the environment variable holding the Prodvana api token."
-    default: PRODVANA_API_TOKEN
+    default: "default"
+    description: "name of the auth context to use"
   service:
     type: string
     description: "name of the service to push"
@@ -19,25 +16,11 @@ parameters:
     type: string
     default: ""
     description: "comma separated list of name of release channel(s) to wait for before considering the push complete"
-  install-pvnctl:
-    type: boolean
-    default: true
-    description: "whether pvnctl should be automatically installed or not."
-  pvnctl-version:
-    type: string
-    default: "latest"
-    description: "what version of pvnctl to install."
 
 steps:
-  - when:
-      condition: <<parameters.install-pvnctl>>
-      steps:
-        - install-pvnctl:
-            version: <<parameters.pvnctl-version>>
   - run:
       environment:
-        PARAM_ORG: <<parameters.org>>
-        PARAM_API_TOKEN: ${<<parameters.api-token>>}
+        PARAM_AUTH_CONTEXT: <<parameters.auth-context>>
         PARAM_SERVICE: <<parameters.service>>
         PARAM_DOCKER_IMAGE: <<parameters.docker-image>>
         PARAM_WAIT_CHANNELS: <<parameters.wait-channels>>

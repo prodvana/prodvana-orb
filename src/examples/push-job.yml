@@ -1,0 +1,16 @@
+description: |
+  Push a change to a service in Prodvana in a single job
+usage:
+  version: 2.1
+
+  orbs:
+    prodvana: prodvana/prodvana@x.y.z
+
+  workflows:
+    build-and-deploy:
+      jobs:
+        - prodvana/push:
+            org: my-org
+            service: my-service
+            docker-image: myrepo/my-service:${CIRCLE_SHA}
+            wait-channels: dogfood,staging

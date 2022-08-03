@@ -1,15 +1,20 @@
 description: >
   This command install pvnctl, the Prodvana command line tool.
-  Requirements: curl, jq, sha256sum. Architectures: x86, amd64, or arm64
+  Requirements: curl, jq, sha256sum. Architectures: x86, amd64, or arm64, Platforms: linux, macos
 
 parameters:
   version:
     type: string
     default: "latest"
     description: "the version of pvnctl to install"
+  install-path:
+    type: string
+    default: "/usr/local/bin"
+    description: "location to install pvnctl"
 steps:
   - run:
       environment:
         PARAM_VERSION: <<parameters.version>>
+        PARAM_INSTALL_PATH: <<parameters.install-path>>
       name: Install pvnctl
       command: <<include(scripts/install-pvnctl.sh)>>
