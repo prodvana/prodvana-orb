@@ -1,0 +1,24 @@
+description: >
+  Sets up a Prodvana auth context.
+  Requirements: pvnctl is installed
+
+parameters:
+  org:
+    type: string
+    description: "Prodvana organization to authenticate with (you can find this in your Org's url: <org>.prodvana.io)"
+  api-token:
+    type: env_var_name
+    default: "PRODVANA_API_TOKEN"
+    description: "name of the environment variable holding the Prodvana api token."
+  context:
+    type: string
+    default: "default"
+    description: "name to give the auth context"
+steps:
+  - run:
+      environment:
+        PARAM_ORG: <<parameters.org>>
+        PARAM_API_TOKEN: <<parameters.api-token>>
+        PARAM_CONTEXT: <<parameters.context>>
+      name: Add an auth context to pvnctl
+      command: <<include(scripts/setup-auth.sh)>>
