@@ -11,7 +11,7 @@ parameters:
     description: "name of the service to push"
   docker-image:
     type: string
-    description: "full path of the docker image to use"
+    description: "Comma separated key-value pairs of '<program_name>=<docker_image>'. if the service has a single program, you can pass just the <docker_image> directly"
   wait-channels:
     type: string
     default: ""
