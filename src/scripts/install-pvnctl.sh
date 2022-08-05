@@ -8,11 +8,6 @@ else
 	VERSION=${PARAM_VERSION}
 fi
 
-if [[ ${VERSION} == v* ]]; then
-	# Strip leading v
-	VERSION="${VERSION#?}"
-fi
-
 case $(uname) in
 Linux) PLATFORM="linux" ;;
 Darwin) PLATFORM="darwin" ;;
@@ -35,8 +30,8 @@ esac
 
 ARCHIVE_NAME="pvnctl_${VERSION}_${PLATFORM}_${ARCH}.tar.gz"
 
-curl -Ls -o checksums.txt "https://github.com/prodvana/pvnctl/releases/download/v${VERSION}/checksums.txt"
-curl -Ls -o "${ARCHIVE_NAME}" "https://github.com/prodvana/pvnctl/releases/download/v${VERSION}/${ARCHIVE_NAME}"
+curl -Ls -o checksums.txt "https://github.com/prodvana/pvnctl/releases/download/${VERSION}/checksums.txt"
+curl -Ls -o "${ARCHIVE_NAME}" "https://github.com/prodvana/pvnctl/releases/download/${VERSION}/${ARCHIVE_NAME}"
 
 # validate checksum
 sha256sum --check --ignore-missing < checksums.txt

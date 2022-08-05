@@ -18,3 +18,8 @@ usage:
             service: bar-service
             docker-image: myrepo/bar:v2.0.1
             wait-channels: dogfood,staging
+
+  workflows:
+    my-workflow:
+      jobs:
+        - deploy

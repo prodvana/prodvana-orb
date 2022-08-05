@@ -92,6 +92,15 @@ workflows:
           wait-channels: staging
           requires:
             - command-tests
+      - prodvana/push:
+          name: test-push-multiprogram-job
+          filters: *filters
+          org: prodvana-cont-testing-prod
+          service: orb-test-multiprogram
+          docker-image: program-0=index.docker.io/prodvana/demo_api:v4,program-1=index.docker.io/hashicorp/http-echo:0.2.3
+          wait-channels: staging
+          requires:
+            - command-tests
       - orb-tools/pack:
           filters: *filters
       - orb-tools/publish:

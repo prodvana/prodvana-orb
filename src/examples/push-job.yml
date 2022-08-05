@@ -9,8 +9,15 @@ usage:
   workflows:
     build-and-deploy:
       jobs:
+        # service with a single program
         - prodvana/push:
             org: my-org
             service: my-service
             docker-image: myrepo/my-service:${CIRCLE_SHA}
+            wait-channels: dogfood,staging
+        # service with a multiple programs
+        - prodvana/push:
+            org: my-org
+            service: my-service
+            docker-image: program-one=myrepo/my-service:${CIRCLE_SHA},program-two=myrepo/my-service-sidecar:${CIRCLE_SHA}
             wait-channels: dogfood,staging

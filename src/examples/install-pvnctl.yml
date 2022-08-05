@@ -7,9 +7,14 @@ usage:
     prodvana: prodvana/prodvana@x.y.z
 
   jobs:
-    deploy:
+    install:
       docker:
         - image: cimg/base:stable
       steps:
         - checkout
         - prodvana/install-pvnctl
+
+  workflows:
+    my-workflow:
+      jobs:
+        - install

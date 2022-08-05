@@ -1,5 +1,5 @@
 description: |
-  Push a service update to Prodvana
+  Authenticate pvnctl with an api token from PRODVANA_API_TOKEN
 
 usage:
   version: 2.1
@@ -8,10 +8,15 @@ usage:
     prodvana: prodvana/prodvana@x.y.z
 
   jobs:
-    deploy:
+    auth:
       docker:
         - image: cimg/base:stable
       steps:
         - checkout
         - prodvana/install-pvnctl
         - prodvana/setup-auth
+
+  workflows:
+    my-workflow:
+      jobs:
+        - auth
