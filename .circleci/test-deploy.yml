@@ -89,9 +89,17 @@ workflows:
           org: prodvana-cont-testing-prod
           service: orb-test
           docker-image: "index.docker.io/prodvana/demo_api:v4"
-          wait-channels: staging
           requires:
             - command-tests
+      - prodvana/push:
+          name: test-push-wait-job
+          filters: *filters
+          org: prodvana-cont-testing-prod
+          service: orb-test
+          docker-image: "index.docker.io/prodvana/demo_api:v4"
+          wait-channels: staging
+          requires:
+            - test-push-job
       - prodvana/push:
           name: test-push-multiprogram-job
           filters: *filters
@@ -109,6 +117,7 @@ workflows:
           pub-type: production
           requires:
             - test-push-job
+            - test-push-wait-job
             - test-push-multiprogram-job
             - orb-tools/pack
             - command-tests
