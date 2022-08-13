@@ -9,6 +9,9 @@ parameters:
   service:
     type: string
     description: "name of the service to push"
+  app:
+    type: string
+    description: "name of the application the service belongs to"
   docker-image:
     type: string
     description: "Comma separated key-value pairs of '<program_name>=<docker_image>'. if the service has a single program, you can pass just the <docker_image> directly"
@@ -21,6 +24,7 @@ steps:
   - run:
       environment:
         PARAM_AUTH_CONTEXT: <<parameters.auth-context>>
+        PARAM_APP: <<parameters.app>>
         PARAM_SERVICE: <<parameters.service>>
         PARAM_DOCKER_IMAGE: <<parameters.docker-image>>
         PARAM_WAIT_CHANNELS: <<parameters.wait-channels>>
