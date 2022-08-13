@@ -72,6 +72,7 @@ jobs:
           channel: staging
       - prodvana/push:
           auth-context: test-context
+          app: default
           service: orb-test
           docker-image: "index.docker.io/prodvana/demo_api:v4"
           wait-channels: staging
@@ -85,6 +86,7 @@ workflows:
           filters: *filters
       - prodvana/push:
           name: test-push-job
+          app: default
           filters: *filters
           org: prodvana-cont-testing-prod
           service: orb-test
@@ -93,6 +95,7 @@ workflows:
             - command-tests
       - prodvana/push:
           name: test-push-wait-job
+          app: default
           filters: *filters
           org: prodvana-cont-testing-prod
           service: orb-test
@@ -102,6 +105,7 @@ workflows:
             - test-push-job
       - prodvana/push:
           name: test-push-multiprogram-job
+          app: default
           filters: *filters
           org: prodvana-cont-testing-prod
           service: orb-test-multiprogram

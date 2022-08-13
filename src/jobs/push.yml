@@ -19,6 +19,9 @@ parameters:
     type: string
     default: "default"
     description: "name of the auth context to create"
+  app:
+    type: string
+    description: "name of the application the service belongs to"
   service:
     type: string
     description: "name of the service to push"
@@ -54,6 +57,7 @@ steps:
       context: <<parameters.auth-context>>
   - push:
       auth-context: <<parameters.auth-context>>
+      app: <<parameters.app>>
       service: <<parameters.service>>
       docker-image: <<parameters.docker-image>>
       wait-channels: <<parameters.wait-channels>>
