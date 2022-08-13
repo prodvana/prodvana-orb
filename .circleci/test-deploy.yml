@@ -11,6 +11,9 @@ commands:
   save-version:
     description: "Persist the current version of the given service to a file"
     parameters:
+      app:
+        type: string
+        description: "app the service belongs to"
       service:
         type: string
         description: "name of the service to check"
@@ -26,11 +29,14 @@ commands:
           name: Save Current Service Version
           command: |
             set -euxo pipefail
-            pvnctl services list  -f json | jq ".[] | select(.service | contains(\"<<parameters.service>>\")) | select(.releaseChannel | contains(\"<<parameters.channel>>\")) | .version" > <<parameters.version-path>>
+            pvnctl services --app <<parameters.app>> list  -f json | jq ".[] | select(.service | contains(\"<<parameters.service>>\")) | select(.releaseChannel | contains(\"<<parameters.channel>>\")) | .version" > <<parameters.version-path>>
 
   validate-push:
     description: "Validate that the push was successful"
     parameters:
+      app:
+        type: string
+        description: "app the service belongs to"
       service:
         type: string
         description: "name of the service to check"
@@ -46,7 +52,7 @@ commands:
           name: Validate Push
           command: |
             set -euxo pipefail
-            version=$(pvnctl services list  -f json | jq ".[] | select(.service | contains(\"<<parameters.service>>\")) | select(.releaseChannel | contains(\"<<parameters.channel>>\")) | .version")
+            version=$(pvnctl services --app <<parameters.app>> list  -f json | jq ".[] | select(.service | contains(\"<<parameters.service>>\")) | select(.releaseChannel | contains(\"<<parameters.channel>>\")) | .version")
             [[ "${version}" != "$(cat <<parameters.last-version-path>>)" ]]
 jobs:
   command-tests:
@@ -66,8 +72,9 @@ jobs:
           command: |
             set -euxo pipefail
             pvnctl auth context use test-context
-            [[ -z "$(pvnctl services list  -f json | jq '.[] | select(.service | contains(\"orb-test\"))')" ]]
+            [[ -z "$(pvnctl services --app=default list  -f json | jq '.[] | select(.service | contains(\"orb-test\"))')" ]]
       - save-version:
+          app: default
           service: orb-test
           channel: staging
       - prodvana/push:
@@ -77,6 +84,7 @@ jobs:
           docker-image: "index.docker.io/prodvana/demo_api:v4"
           wait-channels: staging
       - validate-push:
+          app: default
           service: orb-test
           channel: staging
 workflows:
