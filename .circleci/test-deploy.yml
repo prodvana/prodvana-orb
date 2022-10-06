@@ -121,6 +121,16 @@ workflows:
           wait-channels: staging
           requires:
             - command-tests
+      - prodvana/push:
+          name: test-push-by-release-channel-job
+          app: orb-test
+          filters: *filters
+          org: prodvana-cont-testing-prod
+          service: orb-test-by-release-channel
+          docker-image-by-release-channel: staging=index.docker.io/prodvana/demo_api:v4,dogfood=index.docker.io/prodvana/demo_api:v3
+          wait-channels: staging,dogfood
+          requires:
+            - command-tests
       - orb-tools/pack:
           filters: *filters
       - orb-tools/publish:
