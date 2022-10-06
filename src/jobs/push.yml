@@ -27,7 +27,12 @@ parameters:
     description: "name of the service to push"
   docker-image:
     type: string
-    description: "full path of the docker image to use"
+    description: "Comma separated key-value pairs of '<program_name>=<docker_image>'. if the service has a single program, you can pass just the <docker_image> directly. Cannot be set with `docker-image-by-release-channel`"
+    default: ""
+  docker-image-by-release-channel:
+    type: string
+    description: "Image(s) to update to, per release channel. Comma-separated list of <release_channel>=<image>. If the service has multiple programs you can use <release_channel>=<program>=<image>|<program>=<image>. Cannot be set with `docker-image`"
+    default: ""
   wait-channels:
     type: string
     default: ""
@@ -60,4 +65,5 @@ steps:
       app: <<parameters.app>>
       service: <<parameters.service>>
       docker-image: <<parameters.docker-image>>
+      docker-image-by-release-channel: <<parameters.docker-image-by-release-channel>>
       wait-channels: <<parameters.wait-channels>>
