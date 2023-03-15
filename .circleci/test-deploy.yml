@@ -73,6 +73,14 @@ jobs:
             set -euxo pipefail
             pvnctl auth context use test-context
             [[ -z "$(pvnctl services --app=default list  -f json | jq '.[] | select(.service | contains(\"orb-test\"))')" ]]
+      - prodvana/apply:
+          auth-context: test-context
+          type: runtimes
+          path: testdata/configs/runtimes/*
+      - prodvana/apply:
+          auth-context: test-context
+          type: runtimes
+          path: testdata/configs/runtimes-2/circleci-test-3
       - save-version:
           app: default
           service: orb-test
