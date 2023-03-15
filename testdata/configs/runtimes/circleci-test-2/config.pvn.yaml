@@ -1,0 +1,6 @@
+name: circleci-test-2
+fake:
+  crashing_programs:
+  - cmd_regex: '.*-unknown-flag.*'
+    log_output: |
+      Unknown flag: -unknown-flag
