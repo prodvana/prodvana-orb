@@ -3,7 +3,7 @@ set -euxo pipefail
 
 # Evaluate globs
 PARAM_PATH=$(eval echo "${PARAM_PATH}")
+PARAM_ARRAY=(`echo ${PARAM_PATH} | tr ',' ' '`)
 
 pvnctl auth context use "${PARAM_AUTH_CONTEXT}"
-# intentionally not quoting PARAM_PATH so that wildcards get evaluated.
-pvnctl configs "${PARAM_TYPE}" apply "${PARAM_PATH[@]}"
+pvnctl configs "${PARAM_TYPE}" apply "${PARAM_ARRAY[@]}"
