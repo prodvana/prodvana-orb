@@ -73,6 +73,10 @@ jobs:
             set -euxo pipefail
             pvnctl auth context use test-context
             [[ -z "$(pvnctl services --app=default list  -f json | jq '.[] | select(.service | contains(\"orb-test\"))')" ]]
+      - prodvana/apply:
+          auth-context: test-context
+          type: runtimes
+          path: testdata/configs/runtimes/*
       - save-version:
           app: default
           service: orb-test
@@ -87,10 +91,6 @@ jobs:
           app: default
           service: orb-test
           channel: staging
-      - prodvana/apply:
-          auth-context: test-context
-          type: runtimes
-          path: testdata/configs/runtimes/*
 workflows:
   test-deploy:
     jobs:
