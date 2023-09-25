@@ -8,21 +8,18 @@ usage:
     prodvana: prodvana/prodvana@x.y.z
 
   jobs:
-    deploy:
+    config-apply:
       docker:
         - image: cimg/base:stable
       steps:
         - checkout
         - prodvana/install-pvnctl
         - prodvana/config-apply:
-            path: testdata/configs/runtimes/...
+            path: my-configs/
         - prodvana/config-apply:
-            app: my-app
-            service: bar-service
-            docker-image: myrepo/bar:v2.0.1
-            wait-channels: dogfood,staging
+            path: my-other-configs-with-subdirectories/...
 
   workflows:
     my-workflow:
       jobs:
-        - deploy
+        - config-apply
