@@ -75,11 +75,9 @@ jobs:
             [[ -z "$(pvnctl services --app=default list  -f json | jq '.[] | select(.service | contains(\"orb-test\"))')" ]]
       - prodvana/config-apply:
           auth-context: test-context
-          type: runtimes
-          path: testdata/configs/runtimes/*
+          path: testdata/configs/runtimes/...
       - prodvana/config-apply:
           auth-context: test-context
-          type: runtimes
           path: testdata/configs/runtimes-2/circleci-test-3
       - save-version:
           app: default

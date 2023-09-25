@@ -1,0 +1,20 @@
+description: >
+  This command applies a Prodvana config.
+
+parameters:
+  auth-context:
+    type: string
+    default: "default"
+    description: "name of the auth context to use"
+  path:
+    type: string
+    description: "Path to configs to apply. Can include ... to apply all subdirectories."
+
+steps:
+  - run:
+      environment:
+        PARAM_AUTH_CONTEXT: <<parameters.auth-context>>
+        PARAM_TYPE: <<parameters.type>>
+        PARAM_PATH: <<parameters.path>>
+      name: Apply Prodvana Configs
+      command: <<include(scripts/apply.sh)>>
