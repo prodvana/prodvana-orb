@@ -137,6 +137,16 @@ workflows:
           wait-channels: staging,dogfood
           requires:
             - command-tests
+      - prodvana/push:
+          name: test-push-params-by-release-channel-job
+          app: orb-test
+          filters: *filters
+          org: prodvana-cont-testing-prod
+          service: autogen-image-and-replicas-by-rc
+          params-by-release-channel: staging=apiImage=index.docker.io/prodvana/demo_api:v4,dogfood=apiImage=index.docker.io/prodvana/demo_api:v3
+          wait-channels: staging,dogfood
+          requires:
+            - command-tests
       - orb-tools/pack:
           filters: *filters
       - orb-tools/publish:
