@@ -138,6 +138,16 @@ workflows:
           requires:
             - command-tests
       - prodvana/push:
+          name: test-push-params-job
+          app: orb-test
+          filters: *filters
+          org: prodvana-cont-testing-prod
+          service: autogen-image-and-replicas
+          params: apiImage=index.docker.io/prodvana/demo_api:v4
+          wait-channels: staging,dogfood
+          requires:
+            - command-tests
+      - prodvana/push:
           name: test-push-params-by-release-channel-job
           app: orb-test
           filters: *filters
