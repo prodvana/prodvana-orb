@@ -11,6 +11,6 @@ Current functionality includes installing pvnctl tooling, and pushing a service 
 
 ## Resources
 
-[CircleCI Orb Registry Page](https://circleci.com/orbs/registry/orb/prodvana/prodvana-orb) - The official registry page of this orb for all versions, executors, commands, and jobs described.
+[CircleCI Orb Registry Page](https://circleci.com/developer/orbs/orb/prodvana/prodvana) - The official registry page of this orb for all versions, executors, commands, and jobs described.
 
 [Prodvana Docs](https://docs.prodvana.io/docs)
