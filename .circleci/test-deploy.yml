@@ -29,7 +29,7 @@ commands:
           name: Save Current Service Version
           command: |
             set -euxo pipefail
-            pvnctl services --app <<parameters.app>> list  -f json | jq ".[] | select(.service | contains(\"<<parameters.service>>\")) | select(.releaseChannel | contains(\"<<parameters.channel>>\")) | .version" > <<parameters.version-path>>
+            pvnctl services --app <<parameters.app>> get-desired-state <<parameters.service>> --format=json | jq -r '.release_channels[] | select(.name == "<<parameters.channel>>") | .desired_version' > <<parameters.version-path>>
 
   validate-push:
     description: "Validate that the push was successful"
