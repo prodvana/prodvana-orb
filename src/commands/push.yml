@@ -20,6 +20,14 @@ parameters:
     type: string
     description: "Image(s) to update to, per release channel. Comma-separated list of <release_channel>=<image>. If the service has multiple programs you can use <release_channel>=<program>=<image>|<program>=<image>. Cannot be set with `docker-image`"
     default: ""
+  params:
+    type: string
+    description: "Parameters to apply to this service. Comma-separated list of '<param_name>=<value>'. Cannot be set with `params-by-release-channel`"
+    default: ""
+  params-by-release-channel:
+    type: string
+    description: "Parameters to update per release channel. Comma-separated list of <release_channel>=<param_name>=<value>. Cannot be set with `params`"
+    default: ""
   wait-channels:
     type: string
     default: ""
@@ -33,6 +41,8 @@ steps:
         PARAM_SERVICE: <<parameters.service>>
         PARAM_DOCKER_IMAGE: <<parameters.docker-image>>
         PARAM_DOCKER_IMAGE_BY_RELEASE_CHANNEL: <<parameters.docker-image-by-release-channel>>
+        PARAM_PARAMS: <<parameters.params>>
+        PARAM_PARAMS_BY_RELEASE_CHANNEL: <<parameters.params-by-release-channel>>
         PARAM_WAIT_CHANNELS: <<parameters.wait-channels>>
       name: Push Service
       command: <<include(scripts/push.sh)>>

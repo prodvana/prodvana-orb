@@ -9,21 +9,35 @@ usage:
   workflows:
     build-and-deploy:
       jobs:
-        # service with a single program
+        # service with parameters
+        - prodvana/push:
+            org: my-org
+            app: my-app
+            service: my-service
+            params: serviceImage=myrepo/myservice:${CIRCLE_SHA}
+            wait-channels: dogfood,staging
+        # service with different parameters per Release Channels
+        - prodvana/push:
+            org: my-org
+            app: my-app
+            service: my-service
+            params-by-release-channel: staging=serviceImage=myrepo/myservice-staging:${CIRCLE_SHA},production=serviceImage=myrepo/my-service-production:${CIRCLE_SHA}
+            wait-channels: dogfood,staging
+        # DEPRECATED: service with a single program
         - prodvana/push:
             org: my-org
             app: my-app
             service: my-service
             docker-image: myrepo/my-service:${CIRCLE_SHA}
             wait-channels: dogfood,staging
-        # service with a multiple programs
+        # DEPRECATED: service with a multiple programs
         - prodvana/push:
             org: my-org
             app: my-app
             service: my-service
             docker-image: program-one=myrepo/my-service:${CIRCLE_SHA},program-two=myrepo/my-service-sidecar:${CIRCLE_SHA}
             wait-channels: dogfood,staging
-        # service with different images per Release Channels
+        # DEPRECATED: service with different images per Release Channels
         - prodvana/push:
             org: my-org
             app: my-app
