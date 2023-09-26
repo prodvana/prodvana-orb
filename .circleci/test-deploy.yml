@@ -52,7 +52,7 @@ commands:
           name: Validate Push
           command: |
             set -euxo pipefail
-            version=$(pvnctl --context local services --app <<parameters.app>> get-desired-state <<parameters.service>> --format=json | jq -r '.release_channels[] | select(.name == "<<parameters.channel>>") | .desired_version')
+            version=$(pvnctl services --app <<parameters.app>> get-desired-state <<parameters.service>> --format=json | jq -r '.release_channels[] | select(.name == "<<parameters.channel>>") | .desired_version')
             [[ "${version}" != "$(cat <<parameters.last-version-path>>)" ]]
 jobs:
   command-tests:
