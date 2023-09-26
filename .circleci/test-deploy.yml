@@ -29,7 +29,7 @@ commands:
           name: Save Current Service Version
           command: |
             set -euxo pipefail
-            pvnctl services --app <<parameters.app>> list  -f json | jq ".[] | select(.service | contains(\"<<parameters.service>>\")) | select(.releaseChannel | contains(\"<<parameters.channel>>\")) | .version" > <<parameters.version-path>>
+            pvnctl services --app <<parameters.app>> get-desired-state <<parameters.service>> --format=json | jq -r '.release_channels[] | select(.name == "<<parameters.channel>>") | .desired_version' > <<parameters.version-path>>
 
   validate-push:
     description: "Validate that the push was successful"
@@ -52,7 +52,7 @@ commands:
           name: Validate Push
           command: |
             set -euxo pipefail
-            version=$(pvnctl services --app <<parameters.app>> list  -f json | jq ".[] | select(.service | contains(\"<<parameters.service>>\")) | select(.releaseChannel | contains(\"<<parameters.channel>>\")) | .version")
+            version=$(pvnctl services --app <<parameters.app>> get-desired-state <<parameters.service>> --format=json | jq -r '.release_channels[] | select(.name == "<<parameters.channel>>") | .desired_version')
             [[ "${version}" != "$(cat <<parameters.last-version-path>>)" ]]
 jobs:
   command-tests:
@@ -73,13 +73,11 @@ jobs:
             set -euxo pipefail
             pvnctl auth context use test-context
             [[ -z "$(pvnctl services --app=default list  -f json | jq '.[] | select(.service | contains(\"orb-test\"))')" ]]
-      - prodvana/apply:
+      - prodvana/config-apply:
           auth-context: test-context
-          type: runtimes
-          path: testdata/configs/runtimes/*
-      - prodvana/apply:
+          path: testdata/configs/runtimes/...
+      - prodvana/config-apply:
           auth-context: test-context
-          type: runtimes
           path: testdata/configs/runtimes-2/circleci-test-3
       - save-version:
           app: default

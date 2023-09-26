@@ -1,0 +1,25 @@
+description: |
+  Apply a Prodvana config file.
+
+usage:
+  version: 2.1
+
+  orbs:
+    prodvana: prodvana/prodvana@x.y.z
+
+  jobs:
+    config-apply:
+      docker:
+        - image: cimg/base:stable
+      steps:
+        - checkout
+        - prodvana/install-pvnctl
+        - prodvana/config-apply:
+            path: my-configs/
+        - prodvana/config-apply:
+            path: my-other-configs-with-subdirectories/...
+
+  workflows:
+    my-workflow:
+      jobs:
+        - config-apply
