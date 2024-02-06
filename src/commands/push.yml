@@ -14,11 +14,11 @@ parameters:
     description: "name of the application the service belongs to"
   docker-image:
     type: string
-    description: "Comma separated key-value pairs of '<program_name>=<docker_image>'. if the service has a single program, you can pass just the <docker_image> directly. Cannot be set with `docker-image-by-release-channel`"
+    description: "DEPRECATED: Use `params` instead. Comma separated key-value pairs of '<program_name>=<docker_image>'. if the service has a single program, you can pass just the <docker_image> directly. Cannot be set with `docker-image-by-release-channel`"
     default: ""
   docker-image-by-release-channel:
     type: string
-    description: "Image(s) to update to, per release channel. Comma-separated list of <release_channel>=<image>. If the service has multiple programs you can use <release_channel>=<program>=<image>|<program>=<image>. Cannot be set with `docker-image`"
+    description: "DEPRECATED: Use `params-by-release-channel` instead. Image(s) to update to, per release channel. Comma-separated list of <release_channel>=<image>. If the service has multiple programs you can use <release_channel>=<program>=<image>|<program>=<image>. Cannot be set with `docker-image`"
     default: ""
   params:
     type: string
