@@ -17,7 +17,7 @@ usage:
         - prodvana/push:
             app: my-app
             service: bar-service
-            docker-image: myrepo/bar:v2.0.1
+            params: serviceImage=myrepo/myservice:${CIRCLE_SHA}
             wait-channels: dogfood,staging
 
   workflows:

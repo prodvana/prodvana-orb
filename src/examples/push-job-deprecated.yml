@@ -1,0 +1,29 @@
+description: |
+  Push a change to a service in Prodvana in a single job with DEPRECATED image flow. Use parameters instead.
+usage:
+  version: 2.1
+
+  orbs:
+    prodvana: prodvana/prodvana@x.y.z
+
+  workflows:
+    build-and-deploy:
+      jobs:
+        - prodvana/push:
+            org: my-org
+            app: my-app
+            service: my-service
+            docker-image: myrepo/my-service:${CIRCLE_SHA}
+            wait-channels: dogfood,staging
+        - prodvana/push:
+            org: my-org
+            app: my-app
+            service: my-service
+            docker-image: program-one=myrepo/my-service:${CIRCLE_SHA},program-two=myrepo/my-service-sidecar:${CIRCLE_SHA}
+            wait-channels: dogfood,staging
+        - prodvana/push:
+            org: my-org
+            app: my-app
+            service: my-service
+            docker-image-by-release-channel: staging=myrepo/myservice-staging:${CIRCLE_SHA},production=myrepo/my-service-production:${CIRCLE_SHA}
+            wait-channels: dogfood,staging

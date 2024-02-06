@@ -23,24 +23,3 @@ usage:
             service: my-service
             params-by-release-channel: staging=serviceImage=myrepo/myservice-staging:${CIRCLE_SHA},production=serviceImage=myrepo/my-service-production:${CIRCLE_SHA}
             wait-channels: dogfood,staging
-        # DEPRECATED: service with a single program
-        - prodvana/push:
-            org: my-org
-            app: my-app
-            service: my-service
-            docker-image: myrepo/my-service:${CIRCLE_SHA}
-            wait-channels: dogfood,staging
-        # DEPRECATED: service with a multiple programs
-        - prodvana/push:
-            org: my-org
-            app: my-app
-            service: my-service
-            docker-image: program-one=myrepo/my-service:${CIRCLE_SHA},program-two=myrepo/my-service-sidecar:${CIRCLE_SHA}
-            wait-channels: dogfood,staging
-        # DEPRECATED: service with different images per Release Channels
-        - prodvana/push:
-            org: my-org
-            app: my-app
-            service: my-service
-            docker-image-by-release-channel: staging=myrepo/myservice-staging:${CIRCLE_SHA},production=myrepo/my-service-production:${CIRCLE_SHA}
-            wait-channels: dogfood,staging
